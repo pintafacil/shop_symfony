@@ -31,11 +31,11 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/product/create, roles: ROLE_USER }
-        - { path: ^/product/update/[0-9999]+, roles: ROLE_USER }
-        - { path: ^/product/delete/[0-9999]+, roles: ROLE_USER }
-        - { path: ^/product/disable/[0-9999]+, roles: ROLE_USER }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/product/create, roles: ROLE_ADMIN }
+        - { path: ^/product/update/[0-9999]+, roles: ROLE_ADMIN }
+        - { path: ^/product/delete/[0-9999]+, roles: ROLE_ADMIN }
+        - { path: ^/product/disable/[0-9999]+, roles: ROLE_ADMIN }
+        - { path: ^/product/enable/[0-9999]+, roles: ROLE_ADMIN }
 
 when@test:
     security:

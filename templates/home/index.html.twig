@@ -3,118 +3,23 @@
 {% block title %}Loja do Mestre André{% endblock %}
 
 {% block body %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Loja do Mestre André</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('registration.register') }}">Register</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-      {% if app.user == null %}
-        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
-      {% endif %}
-      {% if app.user %}
-        <a class="nav-link" href="{{path('app_logout')}}">Logout</a>
+  {% if app.user %}
 
-       {{ app.user.email }}
-       {# {{ app.user.role }} #}
-      {% endif %}
-    </ul>
-  </div>
-</nav>
+    {% if app.user.roles[0] == 'ROLE_ADMIN' %}
 
+      {% include 'home/index_admin.html.twig' %}
 
-<!-- Navbar Bootstrap5 -->
+    {% else %}
 
-<div class="container">
-    <a href="{{ path('product.create') }}" class="btn btn-dark">
-        Create new product
-    </a>
-<div>
-<div class="container">
-    <h1 class="mt-3 mb-4">Products</h1>
-    <div class="row">
-        
-        {% set maxPrice = prices|length %}
-        {# {% set priceIdShow = prices[0].getProductid().getId() %}
-          <span class="h5 mt-auto"> {{maxPrice}} €</span>
-          {{priceIdShow}}  #}
-        
-        {% for product in products %}
-        {% set i = 0 %}
-          
+      {% include 'home/index_user.html.twig' %}
 
-        {% if product.status == true %}
-                <div class="card mb-4">
-                    <img height="300px"src="{{ product.imagepath }}" alt="{{ product.name }}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <div class="d-flex justify-content-between align-item-center">
-                            <a href="{{ path('product.detail', {id: product.id}) }}" class="btn btn-dark">
-                                View details
-                            </a>
-                            <a href="{{ path('product.update', {id: product.id}) }}" class="btn btn-green">
-                                Edit
-                            </a>
-                            <a href="{{ path('product.delete', {id: product.id}) }}" class="btn btn-danger">
-                                Delete
-                            </a>
-                            <a href="{{ path('product.disable', {id: product.id}) }}" class="btn btn-warning">
-                                Disable
-                            </a>
-   
-                               {# how to get the price of the product knowing the current status + prodid #}
+    {% endif %}
 
-                              {% for price in prices %}
-                                {% set priceId = prices[i].getProductid().getId() %}
+  {% else %}
 
-                                {% if priceId == product.id %}
-                                  {% if price.status == true %}
-                                    {% set priceValue = price.value %}
-                                    <span class="h5 mt-auto"> {{price.value}} €</span>
-                                  {% endif %}
-                                {% endif %}
-                                  
-                                  {% if i < maxPrice %}
-                                    {% set i = i + 1 %}
-                                  {% endif %}
+    {% include 'home/index_nouser.html.twig' %}
 
-                              {% endfor %}    
-                        </div>
-                    </div>
-                </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-        
-    </div>
-    
-</div>
+  {% endif %}
 
 {% endblock %}

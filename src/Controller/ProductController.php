@@ -193,19 +193,19 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    // //enable product and its prices
-    // #[Route('/product/enable/{id}', name: 'product.enable')]
-    // public function enable($id): Response
-    // {   
-    //     $product = $this->productRepository->find($id); 
+    //enable product and its prices
+    #[Route('/product/enable/{id}', name: 'product.enable')]
+    public function enable($id): Response
+    {   
+        $product = $this->productRepository->find($id); 
         
-    //     $product->setStatus(false);
+        $product->setStatus(true);
 
-    //     $this->em->persist($product);
-    //     $this->em->flush();
+        $this->em->persist($product);
+        $this->em->flush();
 
-    //     return $this->redirectToRoute('home');
-    // }
+        return $this->redirectToRoute('home');
+    }
 
     //HARD delete product and its prices
     #[Route('/product/delete/{id}', name: 'product.delete')]

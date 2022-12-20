@@ -24,11 +24,12 @@
                         </li>
 
                         {% if app.user == null %}
-                          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('registration.register') }}">Register</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
                         {% endif %}
                         {% if app.user %}
-                          <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}">Logout</a></li>
-                          <li class="nav-item"><a class="nav-link">{{ app.user.email }}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
+                            <li class="nav-item"><a class="nav-link">{{ app.user.email }}</a></li>
                           
                         {% endif %}
                     </ul>
@@ -47,8 +48,9 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+                {# change this base on product type #}
+                    <h1 class="display-4 fw-bolder">Board Games Store</h1> 
+                    <p class="lead fw-normal text-white-50 mb-0">Buy our lovely products!</p>
                 </div>
             </div>
         </header>

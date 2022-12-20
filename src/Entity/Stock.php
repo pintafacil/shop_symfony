@@ -17,9 +17,15 @@ class Stock
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $timestamp = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stockList')]
+    #[ORM\Column]
+    private ?int $value = null;
+
+    #[ORM\Column]
+    private ?bool $status = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stocks', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $value = null;
+    private ?Product $Productid = null;
 
     public function getId(): ?int
     {
@@ -38,14 +44,38 @@ class Stock
         return $this;
     }
 
-    public function getValue(): ?Product
+    public function getValue(): ?int
     {
         return $this->value;
     }
 
-    public function setValue(?Product $value): self
+    public function setValue(int $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getProductid(): ?Product
+    {
+        return $this->Productid;
+    }
+
+    public function setProductid(?Product $Productid): self
+    {
+        $this->Productid = $Productid;
 
         return $this;
     }

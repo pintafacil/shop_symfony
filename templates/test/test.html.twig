@@ -43,60 +43,51 @@
             </div>
         </header>
         <!-- Section-->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {# this is a product #}
-
-                    {% set maxPrice = prices|length %}
-
-                    {% for product in products %}
-                        {% set i = 0 %}
-                        {% if product.status == true %}
-
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <!-- Product image-->
-                                <img class="card-img-top" src="{{ product.imagepath }}" alt="{{ product.name }}" />
-                                <!-- Product details-->
-                                <div class="card-body p-4">
-                                    <div class="text-center">
-                                        <!-- Product name-->
-                                        <h5 class="fw-bolder">{{ product.name }}</h5>
-                                        <!-- Product price-->
-                                        <h6 class="card-text">{{ product.description }}</h6>
-
-                                        {% for price in prices %}
-                                            {% set priceId = prices[i].getProductid().getId() %}
-
-                                            {% if priceId == product.id %}
-                                                {% if price.status == true %}
-                                                    {% set priceValue = price.value %}
-                                                         {{price.value}}€
-                                                    {% endif %}
-                                            {% endif %}
-                                                {% if i < maxPrice %}
-                                                    {% set i = i + 1 %}
-                                                {% endif %}
-                                        {% endfor %} 
-                                    </div>
-                                </div>
-                                <!-- Product actions-->
-                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <div class="text-center">
-                                        <a class="btn btn-outline-dark mt-auto" href="{{ path('product.detail', {id: product.id}) }}">
-                                        View options</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {% endif %}
-                    {% endfor %}
-
-                </div>
-            </div>
-        </section>
+     <div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+				<h3>Sign In</h3>
+				<div class="d-flex justify-content-end social_icon">
+					<span><i class="fab fa-facebook-square"></i></span>
+					<span><i class="fab fa-google-plus-square"></i></span>
+					<span><i class="fab fa-twitter-square"></i></span>
+				</div>
+			</div>
+			<div class="card-body">
+				<form>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="username">
+						
+					</div>
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="password">
+					</div>
+					<div class="row align-items-center remember">
+						<input type="checkbox">Remember Me
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Login" class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Don't have an account?<a href="#">Sign Up</a>
+				</div>
+				<div class="d-flex justify-content-center">
+					<a href="#">Forgot your password?</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
         <!-- Footer-->
         
         {% block footer %}
@@ -106,6 +97,8 @@
             
         {% block javascripts %}
             {{ parent()}}
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         {% endblock %}
 
         
@@ -116,4 +109,3 @@
 
 
 {% endblock %}
-

@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Price;
+use App\Entity\Stock;
 use App\Form\EditFormType;
 use App\Form\ProductFormType;
 use App\Repository\ProductRepository;
 use App\Repository\PriceRepository;
-
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,10 +24,11 @@ class ProductController extends AbstractController
 
     private $em;
 
-    public function __construct(ProductRepository $productRepository, PriceRepository $priceRepository, EntityManagerInterface $em)
-    {  
+    public function __construct(ProductRepository $productRepository, PriceRepository $priceRepository, StockRepository $stockRepository, EntityManagerInterface $em)
+    {   
         $this->productRepository = $productRepository;
         $this->priceRepository = $priceRepository;
+        $this->stockRepository = $stockRepository;
         $this->em = $em;
     }
 
@@ -42,15 +44,24 @@ class ProductController extends AbstractController
             
             $data = $productForm->getData();
             $dataPrice = $productForm->get('price')->getData();
-            
+            $dataStock = $productForm->get('stock')->getData();
+
             $price = new Price();
             
             $price->setValue($dataPrice);
             $price->setProductid($product);
             $price->setTimestamp(new \DateTime());
             $price->setStatus(true);
-
             $product->addPrice($price);
+
+            $stock = new Stock();
+
+            $stock->setValue($dataStock);
+            $stock->setProductid($product);
+            $stock->setTimestamp(new \DateTime());
+            $stock->setStatus(true);
+            $product->addStock($stock);
+
             $product->setStatus(true);
             $product->setName($data->getName());
             $product->setDescription($data->getDescription());
@@ -72,7 +83,7 @@ class ProductController extends AbstractController
                 $product->setImagepath('/uploads/'.$imageName);
             }
             $this->em->persist($price);
-
+            $this->em->persist($stock);
             $this->em->persist($product);
             $this->em->flush();
 
@@ -87,18 +98,21 @@ class ProductController extends AbstractController
         ]);
     }
 
-
     //update product
     #[Route('/product/update/{id}', name: 'product.update')]
     public function update($id, Request $request): Response
     {
         $product = $this->productRepository->find($id);
         $price = $this->priceRepository->findOneBy(['Productid' => $id, 'status' => true]);
+        $stock = $this->stockRepository->findOneBy(['Productid' => $id, 'status' => true]);
+        $oldStock = $stock->getValue();
         $oldPrice = $price->getValue();
 
+        //dd($oldStock);
         //dd($oldPrice);
         //exit;
 
+        //dd($price);
         //dd($price);
         //exit;
 
@@ -109,7 +123,9 @@ class ProductController extends AbstractController
             
             $data = $productForm->getData();
             $dataPrice = $productForm->get('price')->getData();
+            $dataStock = $productForm->get('stock')->getData();
             
+            //dd($dataStock);
             //dd($dataPrice);
             //exit;
 
@@ -129,6 +145,23 @@ class ProductController extends AbstractController
                 $this->em->persist($price);
                 $this->em->flush();
             }  
+
+            if (($oldStock != $dataStock) && ($dataStock != null)){ //if stock is changed
+                $stock->setStatus(false);
+                //$product->setStockStatus($stock, false); //this is a test
+                
+                $newStock = new Stock();
+                
+                $newStock->setValue($dataStock);
+                $newStock->setProductid($product);
+                $newStock->setTimestamp(new \DateTime());
+                $newStock->setStatus(true);
+                $product->addStock($newStock);
+
+                $this->em->persist($newStock);
+                $this->em->persist($stock);
+                $this->em->flush();
+            }
 
             $product->setName($data->getName());
             $product->setDescription($data->getDescription());
@@ -169,8 +202,6 @@ class ProductController extends AbstractController
 
             return $this->redirectToRoute('home');
             
-        
-    
         }
 
         return $this->render('product/form.html.twig', [
@@ -179,7 +210,7 @@ class ProductController extends AbstractController
 
     }
 
-    //disable product and its prices
+    //disable product
     #[Route('/product/disable/{id}', name: 'product.disable')]
     public function disable($id): Response
     {   
@@ -193,7 +224,7 @@ class ProductController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    //enable product and its prices
+    //enable product
     #[Route('/product/enable/{id}', name: 'product.enable')]
     public function enable($id): Response
     {   
@@ -216,11 +247,18 @@ class ProductController extends AbstractController
         $fs = new Filesystem();
         $fs ->remove($this->getParameter('kernel.project_dir').
             '/public'.$product->getImagepath());
+
         $priceRepo = $this->priceRepository->findBy(['Productid' => $id]);
+        $stockRepo = $this->stockRepository->findBy(['Productid' => $id]);
         
         //delete a repository of prices 
         foreach ($priceRepo as $price) {
             $this->em->remove($price);
+        }
+
+        //delete a repository of stocks 
+        foreach ($stockRepo as $stock) {
+            $this->em->remove($stock);
         }
 
         $this->em->remove($product);
@@ -235,12 +273,18 @@ class ProductController extends AbstractController
     {
         $price = $this->priceRepository->findOneBy(['Productid' => $id, 'status' => true]);
         $priceValue = $price->getValue();
+
+        $stock = $this->stockRepository->findOneBy(['Productid' => $id, 'status' => true]);
+        $stockValue = $stock->getValue();
+
+        //dd($stockValue);
         //dd($priceValue);
         //exit;
 
         return $this->render('product/detail.html.twig', [
             'product' => $product, 
             'price' => $priceValue,
+            'stock' => $stockValue,
         ]);
     }
 

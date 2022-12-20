@@ -4,7 +4,6 @@
 
 {% block body %}
 
-{# --------------------------------------------- Navbar Bootstrap5 ----------------------------------------------------------------------------#}
  <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
@@ -25,6 +24,7 @@
                         </li>
                           <li class="nav item"><a href="{{ path('product.create') }}" class="nav-link">Create Product</a></li>
                         {% if app.user == null %}
+                          <li class="nav-item"><a class="nav-link" href="{{ path('registration.register') }}">Register</a></li>
                           <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
                         {% endif %}
                         {% if app.user %}
@@ -51,8 +51,8 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+                    <h1 class="display-4 fw-bolder">Board Games Store</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Buy our lovely products!</p>
                 </div>
             </div>
         </header>
@@ -75,7 +75,7 @@
                                     <h6 class="text-center text-danger" >Inactive Product</h6>
                                 {% endif %}
                                     <!-- Product image-->
-                                    <img class="card-img-top" src="{{ product.imagepath }}" alt="{{ product.name }}" />
+                                    <img class="card-img-top"src="{{ product.imagepath }}" alt="{{ product.name }}" />
                                     <!-- Product details-->
                                     <div class="card-body p-4">
                                         <div class="text-center">

@@ -29,6 +29,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $address = null;
+
+    #[ORM\Column]
+    private ?int $nif = null;
+
+    #[ORM\Column]
+    private ?int $phone = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Cart $Cartid = null;
+
+    #[ORM\OneToOne(mappedBy: 'Userid', cascade: ['persist', 'remove'])]
+    private ?Recipt $recipt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,5 +118,99 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getNif(): ?int
+    {
+        return $this->nif;
+    }
+
+    public function setNif(int $nif): self
+    {
+        $this->nif = $nif;
+
+        return $this;
+    }
+
+    public function getPhone(): ?int
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(int $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getCartid(): ?Cart
+    {
+        return $this->Cartid;
+    }
+
+    public function setCartid(?Cart $Cartid): self
+    {
+        $this->Cartid = $Cartid;
+
+        return $this;
+    }
+
+    public function getRecipt(): ?Recipt
+    {
+        return $this->recipt;
+    }
+
+    public function setRecipt(?Recipt $recipt): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($recipt === null && $this->recipt !== null) {
+            $this->recipt->setUserid(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($recipt !== null && $recipt->getUserid() !== $this) {
+            $recipt->setUserid($this);
+        }
+
+        $this->recipt = $recipt;
+
+        return $this;
     }
 }

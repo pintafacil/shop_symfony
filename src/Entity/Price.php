@@ -18,7 +18,7 @@ class Price
     private ?\DateTimeInterface $timestamp = null;
 
     #[ORM\Column]
-    private ?int $value = null;
+    private ?float $value = null;
 
     #[ORM\Column]
     private ?bool $status = null;
@@ -44,12 +44,12 @@ class Price
         return $this;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?float
     {
         return $this->value;
     }
 
-    public function setValue(int $value): self
+    public function setValue(float $value): self
     {
         $this->value = $value;
 

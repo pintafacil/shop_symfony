@@ -48,11 +48,19 @@ class EditFormType extends AbstractType
                 ],
             ))
             ->add('price', NumberType::class, [
-                'label' => 'Product Price',
+                'label' => 'Change Product Price',
                 'mapped' => false,
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Enter Product Price'
+                    'placeholder' => 'Enter New Product Price'
+                ]
+            ])
+            ->add('stock', NumberType::class, [
+                'label' => 'Change Product Stock',
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Enter New Product Stock'
                 ]
             ])
         ;

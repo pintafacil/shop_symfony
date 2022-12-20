@@ -48,6 +48,15 @@ class ProductFormType extends AbstractType
                     'placeholder' => 'Enter Product Price'
                 ]
             ])
+            ->add('stock', NumberType::class, [
+                'label' => 'Initial Product Stock',
+                'mapped' => false,
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Enter Product Stock'
+                ]
+            ])
+
         ;
     }
 

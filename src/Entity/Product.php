@@ -30,9 +30,19 @@ class Product
     #[ORM\OneToMany(mappedBy: 'Productid', targetEntity: Price::class, cascade: ['persist'])]
     private Collection $prices;
 
+    #[ORM\OneToMany(mappedBy: 'Productid', targetEntity: Stock::class)]
+    private Collection $stocks;
+
+    #[ORM\OneToMany(mappedBy: 'Productid', targetEntity: Item::class)]
+    private Collection $items;
+
+    
+
     public function __construct()
     {
         $this->prices = new ArrayCollection();
+        $this->stocks = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,5 +137,66 @@ class Product
         return false;
     }
 
+    /**
+     * @return Collection<int, Stock>
+     */
+    public function getStocks(): Collection
+    {
+        return $this->stocks;
+    }
+
+    public function addStock(Stock $stock): self
+    {
+        if (!$this->stocks->contains($stock)) {
+            $this->stocks->add($stock);
+            $stock->setProductid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStock(Stock $stock): self
+    {
+        if ($this->stocks->removeElement($stock)) {
+            // set the owning side to null (unless already changed)
+            if ($stock->getProductid() === $this) {
+                $stock->setProductid(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setProductid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): self
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getProductid() === $this) {
+                $item->setProductid(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 
 }

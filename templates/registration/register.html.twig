@@ -1,17 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Board Games Shop{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+<div class="container">
+	<div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+		<div class="card">
+			<div class="card-header">
+                <h1>Sign up</h1>
+            </div>
+            <div class="card-body">
+                {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.firstname) }}
+                {{ form_row(registrationForm.lastname) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword) }}
+                {{ form_row(registrationForm.address) }}
+                {{ form_row(registrationForm.phone) }}
+                {{ form_row(registrationForm.nif) }}
+                {{ form_row(registrationForm.agreeTerms) }}
+        
+                <button type="submit" class="btn btn-outline-dark mt-auto">Register</button>
+                {{ form_end(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>   
+</div>
 {% endblock %}

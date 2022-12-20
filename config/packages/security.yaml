@@ -36,6 +36,7 @@ security:
         - { path: ^/product/delete/[0-9999]+, roles: ROLE_ADMIN }
         - { path: ^/product/disable/[0-9999]+, roles: ROLE_ADMIN }
         - { path: ^/product/enable/[0-9999]+, roles: ROLE_ADMIN }
+        - { path: ^/add_to_cart/[0-9999]+, roles: ROLE_USER }
 
 when@test:
     security:

@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ReciptRepository;
+use App\Repository\ReceiptRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ReciptRepository::class)]
-class Recipt
+#[ORM\Entity(repositoryClass: ReceiptRepository::class)]
+class Receipt
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,7 +20,7 @@ class Recipt
     #[ORM\Column]
     private ?float $totalprice = null;
 
-    #[ORM\OneToOne(inversedBy: 'recipt', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'receipts')]
     private ?User $Userid = null;
 
     public function getId(): ?int

@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+{% block body %}
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="#!">Board Games Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ path('home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                        {% if app.user == null %}
+                          <li class="nav-item"><a class="nav-link" href="{{ path('registration.register') }}">Register</a></li>
+                          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                        {% endif %}
+                        {% if app.user %}
+                          <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}">Logout</a></li>
+                          <li class="nav-item"><a class="nav-link">{{ app.user.email }}</a></li>
+                        {% endif %}
+                    </ul>
+                    
+                    
+                    
+                    <form class="d-flex" action="{{path('app_cart')}}">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span> 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+
+<!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Board Games Store</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Buy our lovely products!</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Section-->
+
+            <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+                <div class="col-md-10">
+                    <div class="receipt bg-white p-3 rounded">
+                        <h4 class="mt-2 mb-3">Your order is confirmed!</h4>
+                        <h6 class="name">Hello {{user.firstname}} {{user.lastname}},</h6>
+                        <span class="fs-12 text-black-50">Your order has been confirmed and will be shipped in two days</span>
+                        <hr>
+                        <div class="d-flex flex-row justify-content-between align-items-center order-details">
+                            <div><span class="d-block fs-12">Order date</span><span class="font-weight-bold">{{ receipt.timestamp|date('Y-m-d H:i:s') }}</span></div>
+                            <div><span class="d-block fs-12">Order number</span><span class="font-weight-bold">{{ receipt.id }}</span></div>
+                            <div><span class="d-block fs-12">Payment method</span><span class="font-weight-bold">Credit card</span></div>
+                            <div><span class="d-block fs-12">Shipping Address</span><span class="font-weight-bold text-success">{{ user.address }}</span></div>
+                        </div>
+                        <hr>
+
+                        {% for product in products %}
+                                
+                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                        <div class="col-md-2 col-lg-2 col-xl-2">
+                                            <img src="{{product.imagepath}}" class="img-fluid rounded-3" alt="{{product.name}}">
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xl-3">
+                                            <h6 class="text-muted">{{product.name}}</h6>
+                                            <h6 class="text-black mb-0">{{product.description}}</h6>
+                                        </div>
+                                        <div class="col-md-3 col-lg-1 col-xl-1 ">
+                                            <h6 class="mb-0">Qtd: {{ itemQuantity[loop.index-1] }} </h6>
+                                            
+                                        </div>
+                                        <div class="col-md-3 col-lg-1 col-xl-2 offset-lg-1">
+                                            <h6 class="mb-0">{{ itemPrices[loop.index-1] }} €/unit</h6>
+                                            <hr class="my-4">
+                                            <h6 class="mb-0">Total: {{ itemXQtd[loop.index-1] }} €</h6>
+                                        </div>
+                                </div>
+
+                                <hr class="my-4">
+
+                        {% endfor %}
+                        
+                        <div class="mt-5 amount row">
+                            <div class="col-md-6">
+                                <div class="billing">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Subtotal</span>
+                                        <span class="font-weight-bold">{{cartPrice}} €</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <span>Shipping fee</span>
+                                        <span class="font-weight-bold">2.5 €</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <span class="font-weight-bold">Total</span>
+                                        <span class="font-weight-bold text-success">{{receipt.totalPrice}} €</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="d-block">Expected delivery date</span>
+                        <span class="font-weight-bold text-success"> {{receipt.timestamp | date_modify("+2 day") | date('d/m/Y')}} </span>
+                        <span class="d-block mt-3 text-black-50 fs-15">We will be sending a shipping confirmation email when the item is shipped!</span>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center footer">
+                            <div class="thanks">
+                                <span class="d-block font-weight-bold">Thanks for shopping</span>
+                                <span> Board Games Store </span>
+                            </div>
+                            <div class="d-flex flex-column justify-content-end align-items-end">
+                                <span class="d-block font-weight-bold"> Need Help ? </span>
+                                <span> Call - 123456789 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+   
+
+
+        {% block footer %}
+            {{ parent()}}
+        {% endblock %}
+        
+            
+        {% block javascripts %}
+            {{ parent()}}
+        {% endblock %}
+{% endblock %}

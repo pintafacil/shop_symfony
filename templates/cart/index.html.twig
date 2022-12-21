@@ -3,18 +3,189 @@
 {% block title %}Hello CartController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="#!">Board Games Store</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ path('home') }}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                        {% if app.user == null %}
+                          <li class="nav-item"><a class="nav-link" href="{{ path('registration.register') }}">Register</a></li>
+                          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                        {% endif %}
+                        {% if app.user %}
+                          <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}">Logout</a></li>
+                          <li class="nav-item"><a class="nav-link">{{ app.user.email }}</a></li>
+                        {% endif %}
+                    </ul>
+                    
+                    
+                    
+                    <form class="d-flex" action="{{path('app_cart')}}">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">{{itemTotal}}</span> 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/andre/shop_symfony/shop_symfony/src/Controller/CartController.php'|file_link(0) }}">src/Controller/CartController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/andre/shop_symfony/shop_symfony/templates/cart/index.html.twig'|file_link(0) }}">templates/cart/index.html.twig</a></code></li>
-    </ul>
-</div>
+<!-- Header-->
+        {# <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Board Games Store</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Buy our lovely products!</p>
+                </div>
+            </div>
+        </header> #}
+
+        <!-- Section-->
+
+        
+
+        <section class="h-100 h-custom" style="background-color: #d2c9ff;">
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-warning ">
+                <h6>{{ message }}</h6>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success align-items-center">
+                <p class= "align-items-center">{{ message }} </>
+            </div>
+        {% endfor %}
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-lg-8">
+                            <div class="p-5">
+                                <div class="d-flex justify-content-between align-items-center mb-5">
+                                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                    <h6 class="mb-0 text-muted">{{itemTotal}} items</h6>
+                                </div>
+                                <hr class="my-4">
+                            
+                            {% for product in products %}
+                                
+                                <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                        <div class="col-md-2 col-lg-2 col-xl-2">
+                                            <img src="{{product.imagepath}}" class="img-fluid rounded-3" alt="{{product.name}}">
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xl-3">
+                                            <h6 class="text-muted">{{product.name}}</h6>
+                                            <h6 class="text-black mb-0">{{product.description}}</h6>
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+                                            <form action="{{ path('update_quantity', {id: product.id}) }}" method="post">
+                                                <button type="submit" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                <i class="bi bi-dash"></i> </button>
+                                                <input type="number" min="1" name="itemQuantity" id="itemQuantity" value="{{ itemQuantity[loop.index-1] }}" class="form-control form-control-sm">
+                                                <button type="submit" class="btn btn-link px-2" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                <i class="bi bi-plus"></i> </button>
+                                            </form>
+                                            
+                                        </div>
+                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                            <h6 class="mb-0">{{ itemPrices[loop.index-1] }} </h6>
+                                        </div>
+                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a href="{{ path('remove_from_cart', {id: product.id}) }}" class="text-muted"><i class="bi bi-x"></i></a>
+                                        </div>
+                                </div>
+
+                                <hr class="my-4">
+
+                            {% endfor %}
+
+                                <div class="pt-5">
+                                    <h6 class="mb-0">
+                                    <a href="{{path('home')}}" class="text-decoration-none text-body">
+                                    <i class="bi bi-arrow-bar-left"></i>
+                                        Back to shop</a>
+                                    </h6>
+                                </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 bg-grey">
+                        <div class="p-5">
+                        <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="text-uppercase">{{itemTotal}} items </h5>
+                            <h5>{{cartPrice}} € </h5>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="text-uppercase mb-3">Shipping</h5>
+                            <h5>{{shippingFee}} € </h5>
+                        </div>
+                        <div class="mb-4 pb-2">
+                                
+                                {# <select class="select" value"{{ type }}">
+                                    <option value="1" > Standard-Delivery - 2.50 € {% set shipping = 2.50 %}</option>
+                                    <option value="2" > Express-Delivery - 5.00 € {% set shipping = 5.00 %}</option>
+                                    
+                                </select> #}
+                        </div>
+
+                        <h5 class="text-uppercase mb-3">Give code</h5>
+
+                        <div class="mb-5">
+                            <div class="form-outline">
+                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea2">Enter your code</label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between mb-5">
+                            <h5 class="text-uppercase">Total price</h5>
+                            <h5> {{ cartTotalPrice }} €</h5>
+                        </div>
+                            <button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">
+                                <a href="{{path('cart.receipt')}}" class="text-decoration-none text-white">Buy All</a>
+                            </button>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </section>
+
+
+        {% block footer %}
+            {{ parent()}}
+        {% endblock %}
+        
+            
+        {% block javascripts %}
+            {{ parent()}}
+        {% endblock %}
 {% endblock %}

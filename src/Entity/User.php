@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -47,8 +49,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Cart $Cartid = null;
 
-    #[ORM\OneToOne(mappedBy: 'Userid', cascade: ['persist', 'remove'])]
-    private ?Recipt $recipt = null;
+    #[ORM\OneToMany(mappedBy: 'Userid', targetEntity: Receipt::class)]
+    private Collection $receipts;
+
+    public function __construct()
+    {
+        $this->receipts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -192,25 +199,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRecipt(): ?Recipt
+    /**
+     * @return Collection<int, Receipt>
+     */
+    public function getReceipts(): Collection
     {
-        return $this->recipt;
+        return $this->receipts;
     }
 
-    public function setRecipt(?Recipt $recipt): self
+    public function addReceipt(Receipt $receipt): self
     {
-        // unset the owning side of the relation if necessary
-        if ($recipt === null && $this->recipt !== null) {
-            $this->recipt->setUserid(null);
+        if (!$this->receipts->contains($receipt)) {
+            $this->receipts->add($receipt);
+            $receipt->setUserid($this);
         }
-
-        // set the owning side of the relation if necessary
-        if ($recipt !== null && $recipt->getUserid() !== $this) {
-            $recipt->setUserid($this);
-        }
-
-        $this->recipt = $recipt;
 
         return $this;
     }
+
+    public function removeReceipt(Receipt $receipt): self
+    {
+        if ($this->receipts->removeElement($receipt)) {
+            // set the owning side to null (unless already changed)
+            if ($receipt->getUserid() === $this) {
+                $receipt->setUserid(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

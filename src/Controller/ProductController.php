@@ -281,6 +281,7 @@ class ProductController extends AbstractController
         //dd($priceValue);
         //exit;
 
+        
         return $this->render('product/detail.html.twig', [
             'product' => $product, 
             'price' => $priceValue,

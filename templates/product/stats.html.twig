@@ -32,16 +32,56 @@
     }
   </style>
   <body>
-    <div class="container">
-      <h2>Line Chart</h2>
-      <div>
-        <canvas id="myChart"></canvas>
-      </div>
-    </div>
+    <p> ola </p>
+    <p id="demo"></p>
+    <p id="stock"></p>
+    {% set title = 'The Chart Title' %}
+{% set data = [10, 20, 30] %}
+{%
+  set series = {
+    'my_series' : {
+      'title' : 'What is being plotted',
+      'data' : data
+    }
+  }
+%}
+{%
+  set xaxis = {
+    'title' : 'X-Axis Label',
+    'labels' : ['a', 'b', 'c']
+  }
+%}
+{{ chart('my_twig_chart', 'column', title, series, xaxis, [], []) }}
+      {# <div class="container">
+        <h2>Line Chart</h2>
+        
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div> #}
   </body>
-  
+  <p id="demo"></p>
+
   <script>
+    document.getElementById("demo").innerHTML = 5 + 6;
+    var test1 = [1, 2, 3, 4, 5, 6, 7];
+
+    var test = JSON.stringify(test1);
+    var stockArray = {{stock|json_encode()}};
+    {# var stockArray = {{stock}}; #}
+    {# var stock = JSON.stringify({{stock}}); #}
+    document.getElementById("stock").innerHTML = test;
+  </script>
+
+  {# <script>
     var ctx = document.getElementById("myChart").getContext("2d");
+
+    var stock = {{stock|json_encode()}};
+
+    var Jstock = JSON.parse(stock);
+    document.getElementById("demo").innerHTML = 5 + 6;
+    //print the stock
+    document.getElementById("stock").innerHTML = stock;
     var myChart = new Chart(ctx, {
       type: "line",
       data: {
@@ -68,5 +108,5 @@
         ],
       },
     });
-  </script>
+  </script> #}
 </html>

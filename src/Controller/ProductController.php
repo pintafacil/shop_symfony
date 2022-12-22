@@ -281,7 +281,6 @@ class ProductController extends AbstractController
         //dd($priceValue);
         //exit;
 
-        
         return $this->render('product/detail.html.twig', [
             'product' => $product, 
             'price' => $priceValue,
@@ -289,4 +288,15 @@ class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/stats/{id}', name: 'product.stats')]
+    public function stats($id): Response
+    {   
+         $stock = $this->stockRepository->findBy(['Productid' => $id]);
+
+        // dd($stock);
+        // exit;
+        return $this->render('product/stats.html.twig', [
+            'stock' => $stock,
+        ]);
+    }
 }

@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product form{% endblock %}
+{% block title %}
+    {{parent()}}
+{% endblock %}
 
 {% block body %}
-
+    {% block navigation %}
+        {{super()}}
+    {% endblock %}
     <div class="container">
         <br>
         {{ form_start(productForm) }}
@@ -16,16 +20,14 @@
 
     </div>
 
-        {# {% block footer %}
-            {{ parent()}}
-        {% endblock %} #}
+    {# {% block footer %}
+        {{ parent()}}
+    {% endblock %} #}
+            
                 
-                    
-        {% block javascripts %}
-            {{ parent()}}
-        {% endblock %}
-
-
+    {% block javascripts %}
+        {{ parent()}}
+    {% endblock %}
 
 {% endblock %}
 

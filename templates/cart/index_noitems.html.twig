@@ -3,108 +3,69 @@
 {% block title %}Hello CartController!{% endblock %}
 
 {% block body %}
-<!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Board Games Store</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ path('home') }}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
-                        {% if app.user == null %}
-                          <li class="nav-item"><a class="nav-link" href="{{ path('registration.register') }}">Register</a></li>
-                          <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
-                        {% endif %}
-                        {% if app.user %}
-                          <li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}">Logout</a></li>
-                          <li class="nav-item"><a class="nav-link">{{ app.user.email }}</a></li>
-                        {% endif %}
-                    </ul>
-                    
-                    
-                    
-                    <form class="d-flex" action="{{path('app_cart')}}">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span> 
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </nav>
 
+<!-- Navigation -->
+    {% block navigation %}
+        {{ parent()}}
+    {% endblock %}
 
-<!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Board Games Store</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Buy our lovely products!</p>
-                </div>
-            </div>
-        </header>
+<!-- Header -->
+    {% block header %}
+        {{ parent()}}
+    {% endblock %}
 
-        <!-- Section-->
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-warning ">
-                <h6>{{ message }}</h6>
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success align-items-center">
-                <p class= "align-items-center">{{ message }} </>
-            </div>
-        {% endfor %}
-        <section class="h-100 h-custom" style="background-color: #d2c9ff;">
+<!-- Flash messages -->
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-warning ">
+            <h6>{{ message }}</h6>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success align-items-center">
+            <p class= "align-items-center">{{ message }} </>
+        </div>
+    {% endfor %}
+
+<!-- Section -->
+    <section class="h-100 h-custom" style="background-color: #d2c9ff;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12">
-                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                <div class="card-body p-0">
-                    <div class="row g-0">
-                        <div class="col-lg-8">
-                            <div class="p-5">
-                                <div class="d-flex justify-content-between align-items-center mb-5">
-                                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                                    <h6 class="mb-0 text-muted">0 items</h6>
-                                </div>
-                                <hr class="my-4">
-                                <h1>Add items to cart to start shopping!</h1>
-                                <h2 class="mb-0">
-                                    <a href="{{path('home')}}" class="text-decoration-none text-body">
-                                    <i class="bi bi-arrow-bar-left"></i>
-                                        Back to shop</a>
-                                    </h3>
+                <div class="col-12">
+                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-lg-8">
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                                            <h6 class="mb-0 text-muted">0 items</h6>
+                                        </div>
+                                        <hr class="my-4">
+
+                                        <h1>Add items to cart to start shopping!</h1>
+                                        <h2 class="mb-0">
+                                            <a href="{{path('home')}}" class="text-decoration-none text-body">
+                                            <i class="bi bi-arrow-bar-left"></i>
+                                                Back to shop</a>
+                                        </h2>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
-
-                         
                     </div>
                 </div>
-                </div>
-            </div>
             </div>
         </div>
-        </section>
+    </section>
 
 
-        {% block footer %}
-            {{ parent()}}
-        {% endblock %}
+    {% block footer %}
+        {{ parent()}}
+    {% endblock %}
+    
         
-            
-        {% block javascripts %}
-            {{ parent()}}
-        {% endblock %}
+    {% block javascripts %}
+        {{ parent()}}
+    {% endblock %}
+
 {% endblock %}

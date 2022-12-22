@@ -1,8 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Loja do Mestre André{% endblock %}
-
 {% block body %}
+
+  {% block navigation %}
+    {{parent()}}
+  {% endblock %}
+
+  {% block header %}
+    {{parent()}}
+  {% endblock %}
 
   {% if app.user %}
 
@@ -21,5 +27,13 @@
     {% include 'home/index_nouser.html.twig' %}
 
   {% endif %}
+
+  {% block javascripts %}
+    {{parent()}}
+  {% endblock %}
+
+  {% block footer %}
+    {{parent()}}
+  {% endblock %}
 
 {% endblock %}

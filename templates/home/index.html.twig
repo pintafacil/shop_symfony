@@ -9,6 +9,18 @@
   {% block header %}
     {{parent()}}
   {% endblock %}
+  
+<!-- Flash Messages-->
+    {% for message in app.flashes('error') %}
+            <div class="alert alert-warning ">
+                <h6>{{ message }}</h6>
+            </div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success align-items-center">
+            <p class= "align-items-center">{{ message }} </>
+        </div>
+    {% endfor %}
 
   {% if app.user %}
 

@@ -116,8 +116,7 @@ class CartController extends AbstractController
     #[Route('/add_to_cart/{id}', name: 'add_to_cart')]
     public function add_to_cart(UserInterface $user, $id): Response
     {   
-        
-
+        //find product
         $product = $this->productRepository->find($id);
 
         //check if stock is enough
@@ -137,7 +136,7 @@ class CartController extends AbstractController
         // if($logged_user_cart != null)
             $itemAgain = $this->itemRepository->findOneBy(['Productid' => $product, 'Cartid' => $logged_user_cart]);
         if($itemAgain){
-            //$this->addFlash('error', 'You already added this product to cart!'); //not working as expected
+            $this->addFlash('error', 'You already added this product to cart!'); 
             return $this->redirectToRoute('home');
         }
 
@@ -273,6 +272,7 @@ class CartController extends AbstractController
         $cartId = $user->getCartid();
         $cart = $this->cartRepository->findOneBy(['id' => $cartId]);
 
+        //dd($cart);
         //find items
         $items = $cart->getItems();
 

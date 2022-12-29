@@ -4,7 +4,21 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    #   database_driver: pdo_mysql
+    #   database_host: 127.0.0.1
+    #   database_port: 3306
+    #   database_name: app
+    #   database_user: root
+    #   database_password: null
+    #   mailer_transport: smtp
+    #   mailer_host: 127.0.0.1
+    #   mailer_user: null
+    #   mailer_password: null
+    #   secret: ThisIsVerySecret
+    #   locale: en
+    #   debug_toolbar: true
+    #   debug_redirects: false
+    #   use_assetic_controller: true
 services:
     # default configuration for services in *this* file
     _defaults:

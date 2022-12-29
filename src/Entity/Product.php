@@ -36,8 +36,22 @@ class Product
     #[ORM\OneToMany(mappedBy: 'Productid', targetEntity: Item::class)]
     private Collection $items;
 
-    
+    #[ORM\Column(nullable: true)]
+    private ?int $minage = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $launchyear = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $version = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $author = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type = null;
+
+    
     public function __construct()
     {
         $this->prices = new ArrayCollection();
@@ -193,6 +207,66 @@ class Product
                 $item->setProductid(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMinage(): ?int
+    {
+        return $this->minage;
+    }
+
+    public function setMinage(int $minage): self
+    {
+        $this->minage = $minage;
+
+        return $this;
+    }
+
+    public function getLaunchyear(): ?int
+    {
+        return $this->launchyear;
+    }
+
+    public function setLaunchyear(?int $launchyear): self
+    {
+        $this->launchyear = $launchyear;
+
+        return $this;
+    }
+
+    public function getVersion(): ?int
+    {
+        return $this->version;
+    }
+
+    public function setVersion(?int $version): self
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

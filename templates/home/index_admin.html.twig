@@ -1,8 +1,11 @@
 <!-- Section-->
+<a class="btn btn-outline-dark mt-auto" href="{{ path('product.create')}}">
+                                            Create Product
+                                            </a>
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-          
+                
                     {% set maxPrice = prices|length %}
 
                       {% for product in products %}

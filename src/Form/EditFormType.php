@@ -63,6 +63,35 @@ class EditFormType extends AbstractType
                     'placeholder' => 'Enter New Product Stock'
                 ]
             ])
+            ->add('minage', NumberType::class, [
+                'label' => 'Change Product Minimum Age',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Enter New Product Minimum Age'
+                ]
+            ])
+            ->add('type', TextType::class, [
+                'label' => 'Edit Product Type',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Enter New Product Type'
+                ]
+            ])
+            ->add('launchyear', NumberType::class, [
+                'label' => 'Change Product Launch Year',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Enter New Product Launch Year'
+                ]
+            ])
+            ->add('version', NumberType::class, [
+                'label' => 'Change Product Version',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Enter New Product Version'
+                ]
+            ])
+            
         ;
     }
 

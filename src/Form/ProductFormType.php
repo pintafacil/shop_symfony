@@ -56,6 +56,37 @@ class ProductFormType extends AbstractType
                     'placeholder' => 'Enter Product Stock'
                 ]
             ])
+            ->add('minage', NumberType::class, [
+                'label' => 'Product Minimum Age',
+                'attr' => [
+                    'placeholder' => 'Enter Product Minimum Age'
+                ]
+            ])
+            ->add('launchyear', NumberType::class, [
+                'label' => 'Product Launch Year',
+                'attr' => [
+                    'placeholder' => 'Enter Product Launch Year'
+                ]
+            ])
+            ->add('version', NumberType::class, [
+                'label' => 'Product Version',
+                'attr' => [
+                    'placeholder' => 'Enter Product Version'
+                ]
+            ])
+            ->add('author', TextType::class, [
+                'label' => 'Product Author',
+                'attr' => [
+                    'placeholder' => 'Enter Product Author'
+                ]
+            ])
+            ->add('type', TextType::class, [
+                'label' => 'Product Type',
+                'attr' => [
+                    'placeholder' => 'Enter Product Type'
+                ]
+            ])
+
 
         ;
     }

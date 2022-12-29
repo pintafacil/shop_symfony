@@ -65,6 +65,12 @@ class ProductController extends AbstractController
             $product->setStatus(true);
             $product->setName($data->getName());
             $product->setDescription($data->getDescription());
+            $product->setMinage($data->getMinage());
+            $product->setLaunchyear($data->getLaunchyear());
+            $product->setVersion($data->getVersion());
+            $product->setAuthor($data->getAuthor());
+            $product->setType($data->getType());
+
 
             $productImage = $productForm->get('imagepath')->getData();
             $imageName = md5(uniqid()).'.'.$productImage->guessExtension();
@@ -165,6 +171,11 @@ class ProductController extends AbstractController
 
             $product->setName($data->getName());
             $product->setDescription($data->getDescription());
+            $product->setMinage($data->getMinage());
+            $product->setLaunchyear($data->getLaunchyear());
+            $product->setVersion($data->getVersion());
+            $product->setAuthor($data->getAuthor());
+            $product->setType($data->getType());
 
             //$productImage = $productForm->get('imagepath')->getData();
             $newProductImage = $productForm->get('newimagepath')->getData();
@@ -190,16 +201,13 @@ class ProductController extends AbstractController
                     $fs->remove($this->getParameter('kernel.project_dir').'/public'.$product->getImagepath());
 
                     $product->setImagepath('/uploads/'.$imageName);
-                    
-                    
-                    $this->em->persist($product);
-                    $this->em->flush();
                 }
 
                 //return $this->redirectToRoute('home');
             }
 
-
+            $this->em->persist($product);
+            $this->em->flush();
             return $this->redirectToRoute('home');
             
         }
@@ -292,11 +300,13 @@ class ProductController extends AbstractController
     public function stats($id): Response
     {   
          $stock = $this->stockRepository->findBy(['Productid' => $id]);
+         $price = $this->priceRepository->findBy(['Productid' => $id]);
 
         // dd($stock);
         // exit;
         return $this->render('product/stats.html.twig', [
-            'stock' => $stock,
+            'stocks' => $stock,
+            'prices' => $price,
         ]);
     }
 }
